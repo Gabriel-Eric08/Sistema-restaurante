@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Sistema Bar do Anderson</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome (Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Google Fonts (Poppins e Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Estilos personalizados */
+        :root {
+            --navy-blue: #0a192f; /* Azul marinho bem escuro */
+            --primary-blue: #1e3a8a; /* Azul marinho principal */
+            --accent-blue: #3b82f6; /* Azul de destaque */
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --text-dark: #111827;
+            --text-light: #f1f5f9;
+            --border-color: #e5e7eb;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+        }
+        
+        h1, h2, h3, h4, h5, h6, .navbar-brand, .nav-link, .btn, .card-title {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* --- Barra de Navegação --- */
+        .navbar-main {
+            background-color: var(--primary-blue);
+            /* Gradient sutil */
+            background-image: linear-gradient(90deg, var(--navy-blue) 0%, var(--primary-blue) 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+        
+        .navbar-brand .fa-utensils {
+            margin-right: 0.5rem;
+            color: var(--accent-blue);
+        }
+
+        .navbar-main .nav-link {
+            color: var(--text-light);
+            font-weight: 500;
+            margin: 0 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-main .nav-link i {
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .navbar-main .nav-link:hover,
+        .navbar-main .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .navbar-main .dropdown-menu {
+            border-radius: 0.5rem;
+            border: none;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            animation: fadeInDropdown 0.3s ease-out;
+        }
+
+        .navbar-main .dropdown-item {
+            font-weight: 500;
+        }
+        .navbar-main .dropdown-item:hover {
+            background-color: var(--light-bg);
+            color: var(--primary-blue);
+        }
+
+        .navbar-main .dropdown-toggle::after {
+            border-top-color: var(--white);
+        }
+        
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-blue);
+        }
+
+        /* --- Conteúdo Principal --- */
+        .main-content {
+            padding: 2.5rem;
+            animation: fadeInContent 0.5s ease-out;
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-header h1 {
+            font-weight: 700;
+            color: var(--navy-blue);
+        }
+
+        /* --- Cards do Dashboard --- */
+        .dashboard-card {
+            background-color: var(--white);
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        .dashboard-card .card-body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--primary-blue) 100%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .card-content {
+            text-align: right;
+        }
+        
+        .card-content .display-4 {
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0;
+        }
+        
+        .card-content .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #6c757d;
+        }
+        
+        .dashboard-card .card-footer {
+            background-color: var(--light-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom-left-radius: 0.75rem;
+            border-bottom-right-radius: 0.75rem;
+        }
+
+        .dashboard-card .card-footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .dashboard-card .card-footer a:hover {
+            color: var(--accent-blue);
+        }
+
+
+        /* Keyframes para Animações */
+        @keyframes fadeInDropdown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInContent {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Barra de Navegação Principal -->
+    <nav class="navbar navbar-expand-lg navbar-main navbar-dark">
+        <div class="container-fluid">
+            <!-- Logo/Nome -->
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-utensils"></i>
+                Bar do Anderson
+            </a>
+            
+            <!-- Botão Toggler (Mobile) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Links Principais -->
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-receipt"></i>Comandas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-concierge-bell"></i>Pedidos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-users"></i>Funcionários
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-box-open"></i>Produtos
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- Menu do Usuário (Direita) -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://placehold.co/100x100/1e3a8a/white?text=A" alt="Foto do Usuário" class="profile-pic me-2">
+                            Anderson
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog me-2"></i>Meu Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configurações</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>Sair</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="container-fluid">
+            
+            <!-- Cabeçalho da Página -->
+            <header class="page-header">
+                <h1>Dashboard</h1>
+                <p class="lead text-muted">Visão geral do seu estabelecimento.</p>
+            </header>
+            
+            <!-- Grid de Cards -->
+            <div class="row g-4">
+                
+                <!-- Card Comandas -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="dashboard-card">
+                        <div class="card-body">
+                            <div class="card-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="display-4">27</div>
+                                <div class="card-title">Comandas Abertas</div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="d-flex justify-content-between align-items-center">
+                                <span>Ver todas</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Pedidos -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="dashboard-card">
+                        <div class="card-body">
+                            <div class="card-icon" style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);">
+                                <i class="fas fa-concierge-bell"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="display-4 text-success">8</div>
+                                <div class="card-title">Novos Pedidos</div>
+                            </div>
+                        </div>
+                         <div class="card-footer">
+                            <a href="#" class="d-flex justify-content-between align-items-center">
+                                <span>Gerenciar pedidos</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card Produtos (Estoque) -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="dashboard-card">
+                        <div class="card-body">
+                            <div class="card-icon" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="display-4 text-warning">3</div>
+                                <div class="card-title">Estoque Baixo</div>
+                            </div>
+                        </div>
+                         <div class="card-footer">
+                            <a href="#" class="d-flex justify-content-between align-items-center">
+                                <span>Ver produtos</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Funcionários -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="dashboard-card">
+                        <div class="card-body">
+                            <div class="card-icon" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="display-4" style="color: #4f46e5;">6</div>
+                                <div class="card-title">Equipe Online</div>
+                            </div>
+                        </div>
+                         <div class="card-footer">
+                            <a href="#" class="d-flex justify-content-between align-items-center">
+                                <span>Gerenciar equipe</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Próxima Seção (Ex: Tabela de Pedidos Recentes) -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card" style="border-radius: 0.75rem; border: none; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);">
+                        <div class="card-header bg-white" style="border-bottom: 1px solid var(--border-color); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+                            <h4 class="mb-0" style="font-weight: 600; color: var(--navy-blue);">Pedidos Recentes</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped mb-0" style="vertical-align: middle;">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col" class="ps-4">Pedido #</th>
+                                            <th scope="col">Cliente</th>
+                                            <th scope="col">Mesa</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Total</th>
+                                            <th scope="col" class="pe-4">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="ps-4 fw-bold">#1054</td>
+                                            <td>Marcos Silva</td>
+                                            <td>Mesa 05</td>
+                                            <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Entregue</span></td>
+                                            <td>R$ 120,50</td>
+                                            <td class="pe-4"><button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4 fw-bold">#1053</td>
+                                            <td>Ana Julia</td>
+                                            <td>Mesa 02</td>
+                                            <td><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Preparando</span></td>
+                                            <td>R$ 88,00</td>
+                                            <td class="pe-4"><button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4 fw-bold">#1052</td>
+                                            <td>Delivery</td>
+                                            <td>(Apt 301)</td>
+                                            <td><span class="badge bg-info-subtle text-info-emphasis rounded-pill">Em Rota</span></td>
+                                            <td>R$ 65,00</td>
+                                            <td class="pe-4"><button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
