@@ -18,7 +18,7 @@ class Funcionario(db.Model):
     __tablename__ = 'funcionarios'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(200), nullable=False)
-    senha_hash = db.Column(db.String(255), nullable=False)
+    senha_hash = db.Column(db.Text, nullable=False)
     cargo = db.Column(db.String(50), nullable=False)
 
 class Mesa(db.Model):

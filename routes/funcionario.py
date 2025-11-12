@@ -8,7 +8,7 @@ funcionario_service= FuncionarioService()
 def login_page():
     return 'Login page!'
 
-@funcionario_bp.route('/')
+@funcionario_bp.route('/', methods=['POST'])
 def create_user():
     data = request.get_json() 
     if not data:
@@ -16,18 +16,24 @@ def create_user():
             "sucess":False,
             "message":"Nenhum dado recebido!"
         }), 400
-    nome = data['nome']
-    senha = data['senha']
-    cargo=['cargo']
+    nome = data.get('nome')
+    senha = data.get('senha')
+    cargo= data.get('cargo')
     if not nome or not senha or not cargo:
         return jsonify({
             "sucess":False,
             "message":"Os campos nome, senha e cargo são obrigatórios!"
         }),400
-    funcionario_service.create_user(nome,senha,cargo)
+    create_user = funcionario_service.create_user(nome,senha,cargo)
+    if create_user:
+        return jsonify({
+            "sucess":True,
+            "message": "Funcionário cadstrado com sucesso!"
+        })
     return jsonify({
-        "sucess":True,
-        "message": "Funcionário cadstrado com sucesso!"
-    })
+        "sucess": False,
+        "message": "Erro ao cadastrar usuário"
+    }), 500
+
 
     
