@@ -34,7 +34,7 @@ class Comanda(db.Model):
     id_mesa = db.Column(db.Integer, db.ForeignKey('mesas.id'), nullable=False)
     id_funcionario_abertura = db.Column(db.Integer, db.ForeignKey('funcionarios.id'), nullable=False)
     data_abertura = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-    data_fechamento = db.Column(db.DateTime)
+    data_fechamento = db.Column(db.DateTime, nullable=True)
     status = db.Column(db.String(50), nullable=False, default='Aberta')
     valor_total = db.Column(db.Float, default=0.00)
     mesa = db.relationship('Mesa', backref=db.backref('comandas', lazy=True))
