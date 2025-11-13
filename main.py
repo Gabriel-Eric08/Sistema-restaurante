@@ -4,12 +4,17 @@ from flask import Blueprint
 from routes.login import login_bp
 from routes.home import home_bp
 from routes.funcionario import funcionario_bp
+from routes.produto import produto_bp
+from routes.categoria import categoia_bp
+from routes.mesa import mesa_bp
 
 app.register_blueprint(login_bp)
 app.register_blueprint(home_bp, url_prefix='/home')
 app.register_blueprint(funcionario_bp, url_prefix='/funcionario')
+app.register_blueprint(produto_bp, url_prefix='/produto')
+app.register_blueprint(categoia_bp, url_prefix='/categoria')
+app.register_blueprint(mesa_bp, url_prefix='/mesa')
 
 if __name__ == "__main__":
     print("Iniciando o servidor Flask...")
-    # Usamos o 'app' importado para rodar a aplicação
     app.run(port=80, debug=True)
