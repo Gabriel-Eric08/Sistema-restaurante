@@ -17,3 +17,11 @@ class ProdutoService:
     
     def get_all(self):
         return self.repo.get_all()
+    
+    def price_by_id(self, id_produto):
+        if not id_produto:
+            return False
+        
+        price = self.repo.price_by_id(id_produto)
+        
+        return price

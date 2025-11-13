@@ -9,6 +9,7 @@ from routes.categoria import categoia_bp
 from routes.mesa import mesa_bp
 from routes.comanda import comanda_bp
 from routes.pedido import pedido_bp
+from routes.item_pedido import item_pedido_bp
 
 app.register_blueprint(login_bp)
 app.register_blueprint(home_bp, url_prefix='/home')
@@ -18,6 +19,7 @@ app.register_blueprint(categoia_bp, url_prefix='/categoria')
 app.register_blueprint(mesa_bp, url_prefix='/mesa')
 app.register_blueprint(comanda_bp, url_prefix='/comanda')
 app.register_blueprint(pedido_bp, url_prefix='/pedido')
+app.register_blueprint(item_pedido_bp,url_prefix='/itempedido')
 
 if __name__ == "__main__":
     print("Iniciando o servidor Flask...")

@@ -21,3 +21,8 @@ class ProdutoRepository:
         db.session.add(novo_produto)
         db.session.flush()
         return True
+    
+    def price_by_id(self, id_produto):
+        produto = Produto.query.filter_by(id=id_produto).first()
+        price = produto.preco
+        return price

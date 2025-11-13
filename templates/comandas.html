@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comandas - Sistema Bar do Anderson</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Estilos personalizados (IDÊNTICOS AO BASE) */
+        :root {
+            --navy-blue: #0a192f;
+            --primary-blue: #1e3a8a;
+            --accent-blue: #3b82f6;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --text-dark: #111827;
+            --text-light: #f1f5f9;
+            --border-color: #e5e7eb;
+            
+            /* Cores de Status (NOVAS) */
+            --status-new: #16a34a; /* Verde */
+            --status-medium: #f97316; /* Laranja */
+            --status-old: #dc2626; /* Vermelho */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+        }
+        
+        h1, h2, h3, h4, h5, h6, .navbar-brand, .nav-link, .btn, .card-title {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* --- Barra de Navegação (IDÊNTICA) --- */
+        .navbar-main {
+            background-color: var(--primary-blue);
+            background-image: linear-gradient(90deg, var(--navy-blue) 0%, var(--primary-blue) 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 0.75rem 1.5rem;
+        }
+        .navbar-brand { font-weight: 700; font-size: 1.5rem; color: var(--white); }
+        .navbar-brand .fa-utensils { margin-right: 0.5rem; color: var(--accent-blue); }
+        .navbar-main .nav-link { color: var(--text-light); font-weight: 500; margin: 0 0.5rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; transition: all 0.3s ease; }
+        .navbar-main .nav-link i { margin-right: 0.5rem; width: 20px; text-align: center; }
+        .navbar-main .nav-link:hover, .navbar-main .nav-link.active { background-color: rgba(255, 255, 255, 0.1); color: var(--white); }
+        .navbar-main .dropdown-menu { border-radius: 0.5rem; border: none; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); animation: fadeInDropdown 0.3s ease-out; }
+        .navbar-main .dropdown-item { font-weight: 500; }
+        .navbar-main .dropdown-item:hover { background-color: var(--light-bg); color: var(--primary-blue); }
+        .navbar-main .dropdown-toggle::after { border-top-color: var(--white); }
+        .profile-pic { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-blue); }
+
+        /* --- Conteúdo Principal (IDÊNTICO) --- */
+        .main-content { padding: 2.5rem; animation: fadeInContent 0.5s ease-out; }
+        .page-header { margin-bottom: 2rem; }
+        .page-header h1 { font-weight: 700; color: var(--navy-blue); }
+
+        /* --- Estilos Abas e Comandas (IDÊNTICOS) --- */
+        .nav-tabs { border-bottom-color: var(--border-color); margin-bottom: 1.5rem; }
+        .nav-tabs .nav-link { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--primary-blue); border: none; border-bottom: 3px solid transparent; padding: 0.75rem 1.25rem; font-size: 1.1rem; }
+        .nav-tabs .nav-link:hover { border-color: var(--border-color); background-color: var(--white); }
+        .nav-tabs .nav-link.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); background-color: var(--white); }
+        .tab-content { padding: 1rem 0; }
+        .comanda-card { border-radius: 0.75rem; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); max-width: 900px; margin: 0 auto; }
+        .comanda-card .card-header { background-color: var(--white); border-bottom: 1px solid var(--border-color); font-family: 'Poppins', sans-serif; font-weight: 600; }
+        .comanda-card .card-footer { background-color: var(--light-bg); border-top: 1px solid var(--border-color); font-weight: 600; }
+        .comanda-card .list-group-item strong { color: var(--primary-blue); margin-right: 0.5rem; }
+
+        
+        /* --- ESTILOS NOVOS (Fila da Cozinha) --- */
+        .kitchen-ticket-list .list-group-item {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-left-width: 5px; /* Barra de prioridade */
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 1.25rem;
+        }
+        /* Prioridade (Vermelho = Urgente) */
+        .kitchen-ticket-list .ticket-old {
+            border-left-color: var(--status-old);
+        }
+        /* Prioridade (Amarelo = Atenção) */
+        .kitchen-ticket-list .ticket-medium {
+            border-left-color: var(--status-medium);
+        }
+        /* Prioridade (Verde = Novo) */
+        .kitchen-ticket-list .ticket-new {
+            border-left-color: var(--status-new);
+        }
+
+        .kitchen-ticket-list .ticket-header {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--navy-blue);
+        }
+        
+        .kitchen-ticket-list .ticket-time {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .kitchen-ticket-list .ticket-item {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+        .kitchen-ticket-list .ticket-item strong {
+            color: var(--primary-blue);
+        }
+        
+        /* Destaque para Observações */
+        .kitchen-ticket-list .ticket-observation {
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--status-old); /* Vermelho para chamar atenção */
+            display: block;
+            margin-left: 2.5rem;
+            padding: 0.25rem 0.5rem;
+            background-color: #fef2f2; /* Fundo vermelho claro */
+            border-radius: 0.25rem;
+        }
+        /* --- FIM DOS ESTILOS NOVOS --- */
+
+
+        /* Keyframes para Animações */
+        @keyframes fadeInDropdown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInContent {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-main navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-utensils"></i>
+                Bar do Anderson
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"> <i class="fas fa-tachometer-alt"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#"> <i class="fas fa-receipt"></i>Comandas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-concierge-bell"></i>Pedidos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-users"></i>Funcionários
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-box-open"></i>Produtos
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://placehold.co/100x100/1e3a8a/white?text=A" alt="Foto do Usuário" class="profile-pic me-2">
+                            {{ username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog me-2"></i>Meu Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configurações</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>Sair</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container-fluid">
+            
+            <header class="page-header">
+                <h1><i class="fas fa-receipt me-3"></i>Comandas e Pedidos</h1>
+                <p class="lead text-muted">Acompanhe os pedidos ativos por mesa e a fila da cozinha.</p>
+            </header>
+            
+            <ul class="nav nav-tabs" id="mesasTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mesa1-tab" data-bs-toggle="tab" data-bs-target="#mesa1-content" type="button" role="tab" aria-controls="mesa1-content" aria-selected="false"> Mesa 01
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mesa2-tab" data-bs-toggle="tab" data-bs-target="#mesa2-content" type="button" role="tab" aria-controls="mesa2-content" aria-selected="false">
+                        Mesa 02
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mesa5-tab" data-bs-toggle="tab" data-bs-target="#mesa5-content" type="button" role="tab" aria-controls="mesa5-content" aria-selected="false">
+                        Mesa 05 
+                        <span class="badge rounded-pill bg-danger ms-1">2</span>
+                    </button>
+                </li>
+                <li class="nav-item ms-auto" role="presentation">
+                    <button class="nav-link active" id="cozinha-tab" data-bs-toggle="tab" data-bs-target="#cozinha-content" type="button" role="tab" aria-controls="cozinha-content" aria-selected="true"> <i class="fas fa-fire-burner me-2"></i>Fila Cozinha (Todos)
+                        <span class="badge rounded-pill bg-warning text-dark ms-1">3</span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="mesasTabContent">
+                
+                <div class="tab-pane fade" id="mesa1-content" role="tabpanel" aria-labelledby="mesa1-tab">
+                    
+                    <div class="card comanda-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                          <h5 class="mb-0">Comanda #1054 (Mesa 01 - Marcos Silva)</h5>
+                          <span class="text-muted">Garçom: Ana</span>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div><strong>2x</strong> X-Bacon</div>
+                            <span class="fw-bold">R$ 30,00</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div><strong>1x</strong> Porção de Fritas (G)</div>
+                            <span class="fw-bold">R$ 25,00</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div><strong>3x</strong> Coca-Cola Lata <span class="badge bg-success-subtle text-success-emphasis rounded-pill ms-2">Entregue</span></div>
+                            <span class="fw-bold">R$ 15,00</span>
+                          </li>
+                        </ul>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                          <strong class="text-dark h5 mb-0">Total: R$ 70,00</strong>
+                          <div>
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-plus me-1"></i> Adicionar Item</button>
+                            <button class="btn btn-sm btn-success"><i class="fas fa-cash-register me-1"></i> Fechar Conta</button>
+                          </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane fade" id="mesa2-content" role="tabpanel" aria-labelledby="mesa2-tab">
+                    
+                    <div class="card comanda-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                          <h5 class="mb-0">Comanda #1053 (Mesa 02 - Ana Julia)</h5>
+                          <span class="text-muted">Garçom: Bruno</span>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              <div><strong>1x</strong> Caipirinha de Limão (Dobrada) <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill ms-2">Preparando</span></div>
+                              <span class="fw-bold">R$ 20,00</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              <div><strong>2x</strong> Cerveja Original 600ml <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill ms-2">Preparando</span></div>
+                              <span class="fw-bold">R$ 28,00</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div><strong>1x</strong> Tábua de Frios (M) <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill ms-2">Preparando</span></div>
+                                <span class="fw-bold">R$ 40,00</span>
+                              </li>
+                          </ul>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                          <strong class="text-dark h5 mb-0">Total: R$ 88,00</strong>
+                          <div>
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-plus me-1"></i> Adicionar Item</button>
+                            <button class="btn btn-sm btn-success"><i class="fas fa-cash-register me-1"></i> Fechar Conta</button>
+                          </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane fade" id="mesa5-content" role="tabpanel" aria-labelledby="mesa5-tab">
+                    
+                    <div class="card comanda-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                          <h5 class="mb-0">Comanda #1055 (Mesa 05 - Família Souza)</h5>
+                          <span class="text-muted">Garçom: Ana</span>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              <div><strong>2x</strong> Burger da Casa <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill ms-2">Preparando</span></div>
+                              <span class="fw-bold">R$ 44,00</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div><strong>1x</strong> Porção de Onion Rings <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill ms-2">Preparando</span></div>
+                                <span class="fw-bold">R$ 22,00</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div><strong>4x</strong> Suco de Laranja <span class="badge bg-success-subtle text-success-emphasis rounded-pill ms-2">Entregue</span></div>
+                                <span class="fw-bold">R$ 40,00</span>
+                            </li>
+                          </ul>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                          <strong class="text-dark h5 mb-0">Total: R$ 106,00</strong>
+                          <div>
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-plus me-1"></i> Adicionar Item</button>
+                            <button class="btn btn-sm btn-success"><i class="fas fa-cash-register me-1"></i> Fechar Conta</button>
+                          </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+                <div class="tab-pane fade show active" id="cozinha-content" role="tabpanel" aria-labelledby="cozinha-tab">
+                    
+                    <h4 class="mb-3" style="font-weight: 600; color: var(--navy-blue);">Fila de Preparo (Pedidos por ordem de chegada)</h4>
+                    <p class="text-muted">Os pedidos mais antigos (vermelho/laranja) devem ser priorizados.</p>
+                    
+                    <div class="kitchen-ticket-list">
+                        <ul class="list-group">
+
+                            <li class="list-group-item ticket-old">
+                                <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                                    <h5 class="ticket-header mb-0">Mesa 02 (Comanda #1053)</h5>
+                                    <span class="ticket-time">Há 12 min (14:02)</span>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="ticket-item"><strong>1x</strong> Caipirinha de Limão (Dobrada)</div>
+                                    <div class="ticket-item"><strong>2x</strong> Cerveja Original 600ml</div>
+                                    <div class="ticket-item"><strong>1x</strong> Tábua de Frios (M)</div>
+                                </div>
+                                <button class="btn btn-success"><i class="fas fa-check me-2"></i>Marcar como Pronto</button>
+                            </li>
+
+                            <li class="list-group-item ticket-medium">
+                                <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                                    <h5 class="ticket-header mb-0">Mesa 05 (Comanda #1055-A)</h5>
+                                    <span class="ticket-time">Há 8 min (14:05)</span>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="ticket-item">
+                                        <strong>2x</strong> Burger da Casa
+                                        <span class="ticket-observation">
+                                            <i class="fas fa-comment-dots me-2"></i>
+                                            1x Ao ponto, **sem cebola** | 1x Bem passado, completo
+                                        </span>
+                                    </div>
+                                    <div class="ticket-item"><strong>1x</strong> Porção de Onion Rings</div>
+                                </div>
+                                <button class="btn btn-success"><i class="fas fa-check me-2"></i>Marcar como Pronto</button>
+                            </li>
+                            
+                            <li class="list-group-item ticket-new">
+                                <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                                    <h5 class="ticket-header mb-0">Mesa 01 (Comanda #1054-B)</h5>
+                                    <span class="ticket-time">Há 2 min (14:07)</span>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="ticket-item"><strong>3x</strong> Coca-Cola Lata</div>
+                                </div>
+                                <button class="btn btn-success"><i class="fas fa-check me-2"></i>Marcar como Pronto</button>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+                </div>
+            
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
